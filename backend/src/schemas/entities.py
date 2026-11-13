@@ -1,4 +1,4 @@
-from pydantic import BaseModel,Field,ConfigDict
+from pydantic import BaseModel,Field,ConfigDict,field_validator
 from typing import Literal
 class StrictModel(BaseModel):
  model_config=ConfigDict(allow_inf_nan=False)
@@ -24,6 +24,14 @@ class SequenceStudyInput(StrictModel):
  min_support:float=Field(default=.1,gt=0,le=1)
  max_length:int=Field(default=3,ge=1,le=4)
  collapse_repeats:bool=True
+ insert_cost:int=1
+ delete_cost:int=1
+ substitute_cost:int=1
+ @field_validator('insert_cost','delete_cost','substitute_cost')
+ @classmethod
+ def positive_cost(cls,value):
+  if value<1:raise ValueError('补入、删去、替换成本必须是正整数')
+  return value
 class RunInput(StrictModel):
  study_id:str
 class ReviewInput(StrictModel):

@@ -22,6 +22,9 @@ class SequenceStudy:
  min_support:float=.1
  max_length:int=3
  collapse_repeats:bool=True
+ insert_cost:int=1
+ delete_cost:int=1
+ substitute_cost:int=1
  created_at:str=''
 @dataclass
 class SequenceRun:
